@@ -5,7 +5,29 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 
 const mongoose = require('mongoose')
-mongoose.connect(process.env.MLAB_URI || 'mongodb://localhost/exercise-track' )
+mongoose.connect('mongodb://localhost/ExcerciseTrackerDB', 
+                 {useMongoClient : true},             
+                  (err, doc) =>{
+                      if(err){
+                          console.log(err);
+                      }else{
+                          console.log("MongoDB Successfull Connection");
+  }
+});
+
+const userSchema = mongoose.Schema({
+  username : {
+    type:String,
+    required:true
+  },
+  id : {
+    type:String,
+    required:true
+  }
+});
+
+var User = mongoose.model('User',userSchema);
+
 
 app.use(cors())
 
