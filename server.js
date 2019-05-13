@@ -54,26 +54,36 @@ app.post('/api/exercise/new-user', (req, res) => {
 
 app.post('/api/exercise/add', (req, res) => {
     User.findByIdAndUpdate({'_id' : req.body.userId}, {$set:{
-                                              'description' : req.body.description,
+                                              'description': req.body.description,
                                               'duration' : req.body.duration,
-                                              'date' : req.body.date
+                                              'date' : new Date(req.body.date)
                                                   }
                                             },
                                             
     ); 
     User.find({'_id' : req.body.userId}, (err,doc) => {
+      if(err){
+        console.log(err);
+      }
      const my_username = doc[0].username;
      res.send({'username' : my_username, 'description' : req.body.description,
     'duration' : req.body.duration, '_id' : req.body.userId,
     'date' : req.body.date});
     });
        
-                                                                              
+                                                                    
 });
                                             
                                               
                           
-                                            
+app.get('/api/exercise/log', (req, res) => {
+  User.find({'_id' : req.query.userId}, (err, result) =>{
+    if(err){
+      console.log(err);
+    }
+    res.send(result[0]);
+  });
+});                                            
                                       
                       
                             
